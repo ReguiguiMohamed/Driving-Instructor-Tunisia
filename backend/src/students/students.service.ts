@@ -101,7 +101,7 @@ export class StudentsService {
       totalLessons: student.totalLessonsCompleted,
       totalPaid: student.totalAmountPaid,
       totalDue: student.totalAmountDue,
-      lessonsRemaining: student.totalLessonsPaid - student.totalLessonsCompleted,
+      lessonsRemaining: Math.max(0, student.totalLessonsPaid - student.totalLessonsCompleted),
       status: student.status
     };
   }
