@@ -36,6 +36,7 @@ import {
   ConfirmationNumber,
 } from '@mui/icons-material';
 import { Payment, Student } from '../../types';
+import Loading from '../common/Loading';
 import { getPayments, createPayment, updatePayment, deletePayment } from '../../services/paymentService';
 import { getStudents } from '../../services/studentService';
 import { formatCurrency } from '../../utils/currency';
@@ -127,6 +128,7 @@ const PaymentTracker: React.FC = () => {
   });
   const [dialogTitle, setDialogTitle] = useState('إضافة دفعة جديدة');
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,6 +139,8 @@ const PaymentTracker: React.FC = () => {
       } catch (error) {
         console.error("Failed to fetch data:", error);
         setAlert({ type: 'error', message: 'فشل تحميل البيانات' });
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -211,8 +215,12 @@ const PaymentTracker: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 }}>
+    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 }} className="fade-in">
       <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ mb: 3, fontWeight: 700 }}>
         إدارة الدفعات
       </Typography>

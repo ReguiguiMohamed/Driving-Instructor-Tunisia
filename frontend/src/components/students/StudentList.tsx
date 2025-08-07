@@ -37,6 +37,7 @@ import { Student } from '../../types';
 import { getStudents, createStudent, deleteStudent, updateStudent } from '../../services/studentService';
 import { formatCurrency } from '../../utils/currency';
 import StudentCard from './StudentCard';
+import Loading from '../common/Loading';
 
 const StudentList: React.FC = () => {
   const theme = useTheme();
@@ -57,6 +58,7 @@ const StudentList: React.FC = () => {
   });
 
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -66,6 +68,8 @@ const StudentList: React.FC = () => {
         setFiltered(list);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
@@ -145,8 +149,12 @@ const StudentList: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
-    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 /* Add padding to bottom to avoid overlap with FAB */ }}>
+    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 /* Add padding to bottom to avoid overlap with FAB */ }} className="fade-in">
       {/* Header & Search */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
         <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ flexGrow: 1 }}>

@@ -3,6 +3,7 @@ import { Lesson, Student } from '../../types';
 import { getLessons, createLesson, updateLesson, deleteLesson } from '../../services/lessonService';
 import { getStudents } from '../../services/studentService';
 import LessonForm from './LessonForm';
+import Loading from '../common/Loading';
 import {
   Box,
   Typography,
@@ -28,12 +29,17 @@ const LessonCalendar: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [dialogTitle, setDialogTitle] = useState('إضافة درس جديد');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const [lessonData, studentData] = await Promise.all([getLessons(), getStudents()]);
-      setLessons(lessonData);
-      setStudents(studentData);
+      try {
+        const [lessonData, studentData] = await Promise.all([getLessons(), getStudents()]);
+        setLessons(lessonData);
+        setStudents(studentData);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -75,6 +81,10 @@ const LessonCalendar: React.FC = () => {
     setLessons(prev => prev.filter(l => l.id !== id));
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <Box
       sx={{
@@ -83,6 +93,7 @@ const LessonCalendar: React.FC = () => {
         minHeight: '100vh',
         position: 'relative',
       }}
+      className="fade-in"
     >
       <Typography
         variant={isMobile ? 'h5' : 'h4'}
