@@ -131,12 +131,12 @@ const LessonCalendar: React.FC = () => {
 
       <Fab
         color="primary"
-        // FIXED: Wrapped handleOpen in an arrow function to fix type mismatch.
         onClick={() => handleOpen()}
         sx={{
           position: 'fixed',
-          bottom: isMobile ? 16 : 24,
+          bottom: isMobile ? 80 : 40,
           right: isMobile ? 16 : 24,
+          zIndex: 1000,
         }}
         size={isMobile ? 'medium' : 'large'}
       >

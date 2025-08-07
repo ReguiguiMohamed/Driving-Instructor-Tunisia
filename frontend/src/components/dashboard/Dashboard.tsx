@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -10,6 +11,7 @@ import {
   LinearProgress,
   useTheme,
   useMediaQuery,
+  Fade,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -47,6 +49,7 @@ interface StatCardProps {
   color: string;
   trend?: number;
   progress?: number;
+  onClick?: () => void;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -57,45 +60,49 @@ const StatCard: React.FC<StatCardProps> = ({
   color,
   trend,
   progress,
+  onClick,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Card
-      sx={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 255, 255, 0.9) 0%, 
-          rgba(255, 255, 255, 0.7) 100%)`,
-        backdropFilter: 'blur(20px)',
-        borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-        overflow: 'hidden',
-        position: 'relative',
-        transition: 'all 0.3s ease',
-        '&:hover': {
-          transform: 'translateY(-4px)',
-          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '4px',
-          background: `linear-gradient(90deg, ${color}, ${color}99)`,
-        },
-      }}
-    >
-      <CardContent sx={{ p: isMobile ? 2 : 3, position: 'relative' }}>
+    <Fade in timeout={600}>
+      <Card
+        onClick={onClick}
+        sx={{
+          background: `linear-gradient(135deg,
+            rgba(31, 41, 55, 0.9) 0%,
+            rgba(31, 41, 55, 0.7) 100%)`,
+          backdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+          overflow: 'hidden',
+          position: 'relative',
+          transition: 'all 0.3s ease',
+          cursor: onClick ? 'pointer' : 'default',
+          '&:hover': {
+            transform: 'translateY(-4px)',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
+          },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '4px',
+            background: `linear-gradient(90deg, ${color}, ${color}99)`,
+          },
+        }}
+      >
+        <CardContent sx={{ p: isMobile ? 2 : 3, position: 'relative' }}>
         <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
           <Box sx={{ flex: 1 }}>
             <Typography
               variant="body2"
               sx={{
-                color: '#64748B',
+                color: '#D1D5DB',
                 fontFamily: '"Cairo", sans-serif',
                 fontWeight: 500,
                 mb: 1,
@@ -108,7 +115,7 @@ const StatCard: React.FC<StatCardProps> = ({
               variant={isMobile ? 'h5' : 'h4'}
               sx={{
                 fontWeight: 700,
-                color: '#1F2937',
+                color: '#F9FAFB',
                 mb: 0.5,
                 fontFamily: '"Cairo", sans-serif',
               }}
@@ -178,10 +185,10 @@ const StatCard: React.FC<StatCardProps> = ({
         {progress !== undefined && (
           <Box sx={{ mt: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-              <Typography variant="caption" sx={{ color: '#64748B', fontSize: '0.75rem' }}>
+              <Typography variant="caption" sx={{ color: '#D1D5DB', fontSize: '0.75rem' }}>
                 التقدم
               </Typography>
-              <Typography variant="caption" sx={{ color: '#1F2937', fontWeight: 600, fontSize: '0.75rem' }}>
+              <Typography variant="caption" sx={{ color: '#F9FAFB', fontWeight: 600, fontSize: '0.75rem' }}>
                 {Math.round(progress)}%
               </Typography>
             </Box>
@@ -191,7 +198,7 @@ const StatCard: React.FC<StatCardProps> = ({
               sx={{
                 height: 6,
                 borderRadius: 3,
-                backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
                 '& .MuiLinearProgress-bar': {
                   borderRadius: 3,
                   background: `linear-gradient(90deg, ${color}, ${color}CC)`,
@@ -201,11 +208,13 @@ const StatCard: React.FC<StatCardProps> = ({
           </Box>
         )}
       </CardContent>
-    </Card>
+      </Card>
+    </Fade>
   );
 };
 
 const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [stats, setStats] = useState<DashboardStats>({
@@ -297,7 +306,7 @@ const Dashboard: React.FC = () => {
           sx={{
             fontFamily: '"Amiri", serif',
             fontWeight: 700,
-            color: '#1F2937',
+            color: '#F9FAFB',
             mb: 1,
             textAlign: 'center',
           }}
@@ -307,7 +316,7 @@ const Dashboard: React.FC = () => {
         <Typography
           variant="body1"
           sx={{
-            color: '#64748B',
+            color: '#D1D5DB',
             textAlign: 'center',
             fontFamily: '"Cairo", sans-serif',
           }}
@@ -325,8 +334,9 @@ const Dashboard: React.FC = () => {
             value={stats.totalStudents}
             subtitle={`${stats.activeStudents} نشط`}
             icon={<People />}
-            color="#4A90E2"
+            color="#1E40AF"
             progress={activeRate}
+            onClick={() => navigate('/students')}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -335,8 +345,9 @@ const Dashboard: React.FC = () => {
             value={stats.todayLessons}
             subtitle={`من ${stats.totalLessons} إجمالي`}
             icon={<Event />}
-            color="#16A34A"
+            color="#0D9488"
             trend={15} // Placeholder trend value
+            onClick={() => navigate('/lessons')}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -345,8 +356,9 @@ const Dashboard: React.FC = () => {
             value={formatCurrency(stats.monthlyRevenue)}
             subtitle={`من ${formatCurrency(stats.totalRevenue)} إجمالي`}
             icon={<AttachMoney />}
-            color="#FFB347"
+            color="#F97316"
             trend={8} // Placeholder trend value
+            onClick={() => navigate('/payments')}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -355,7 +367,7 @@ const Dashboard: React.FC = () => {
             value={stats.completedLessons}
             subtitle={`معدل الإنجاز ${Math.round(completionRate)}%`}
             icon={<CheckCircle />}
-            color="#10B981"
+            color="#059669"
             progress={completionRate}
           />
         </Grid>
@@ -367,10 +379,10 @@ const Dashboard: React.FC = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Card
             sx={{
-              background: 'rgba(255, 255, 255, 0.9)',
+              background: 'rgba(31, 41, 55, 0.9)',
               backdropFilter: 'blur(20px)',
               borderRadius: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               overflow: 'hidden',
             }}
@@ -382,7 +394,7 @@ const Dashboard: React.FC = () => {
                   sx={{
                     fontFamily: '"Cairo", sans-serif',
                     fontWeight: 600,
-                    color: '#1F2937',
+                    color: '#F9FAFB',
                   }}
                 >
                   الطلاب الجدد
@@ -393,7 +405,7 @@ const Dashboard: React.FC = () => {
               </Box>
 
               {recentStudents.length === 0 ? (
-                <Typography variant="body2" sx={{ color: '#64748B', textAlign: 'center', py: 3 }}>
+                <Typography variant="body2" sx={{ color: '#D1D5DB', textAlign: 'center', py: 3 }}>
                   لا يوجد طلاب جدد
                 </Typography>
               ) : (
@@ -406,11 +418,11 @@ const Dashboard: React.FC = () => {
                         alignItems: 'center',
                         gap: 2,
                         p: 2,
-                        background: 'rgba(255, 255, 255, 0.5)',
+                        background: 'rgba(31, 41, 55, 0.5)',
                         borderRadius: '12px',
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                          background: 'rgba(255, 255, 255, 0.8)',
+                          background: 'rgba(31, 41, 55, 0.8)',
                           transform: 'translateX(-4px)',
                         },
                       }}
@@ -431,7 +443,7 @@ const Dashboard: React.FC = () => {
                           variant="body2"
                           sx={{
                             fontWeight: 600,
-                            color: '#1F2937',
+                            color: '#F9FAFB',
                             fontFamily: '"Cairo", sans-serif',
                           }}
                         >
@@ -440,7 +452,7 @@ const Dashboard: React.FC = () => {
                         <Typography
                           variant="caption"
                           sx={{
-                            color: '#64748B',
+                            color: '#D1D5DB',
                             fontSize: '0.75rem',
                           }}
                         >
@@ -470,10 +482,10 @@ const Dashboard: React.FC = () => {
         <Grid size={{ xs: 12, md: 6 }}>
           <Card
             sx={{
-              background: 'rgba(255, 255, 255, 0.9)',
+              background: 'rgba(31, 41, 55, 0.9)',
               backdropFilter: 'blur(20px)',
               borderRadius: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
               overflow: 'hidden',
             }}
@@ -485,7 +497,7 @@ const Dashboard: React.FC = () => {
                   sx={{
                     fontFamily: '"Cairo", sans-serif',
                     fontWeight: 600,
-                    color: '#1F2937',
+                    color: '#F9FAFB',
                   }}
                 >
                   الدروس القادمة
@@ -496,7 +508,7 @@ const Dashboard: React.FC = () => {
               </Box>
 
               {upcomingLessons.length === 0 ? (
-                <Typography variant="body2" sx={{ color: '#64748B', textAlign: 'center', py: 3 }}>
+                <Typography variant="body2" sx={{ color: '#D1D5DB', textAlign: 'center', py: 3 }}>
                   لا توجد دروس مجدولة
                 </Typography>
               ) : (
@@ -509,11 +521,11 @@ const Dashboard: React.FC = () => {
                         alignItems: 'center',
                         gap: 2,
                         p: 2,
-                        background: 'rgba(255, 255, 255, 0.5)',
+                        background: 'rgba(31, 41, 55, 0.5)',
                         borderRadius: '12px',
                         transition: 'all 0.3s ease',
                         '&:hover': {
-                          background: 'rgba(255, 255, 255, 0.8)',
+                          background: 'rgba(31, 41, 55, 0.8)',
                           transform: 'translateX(-4px)',
                         },
                       }}
@@ -532,7 +544,7 @@ const Dashboard: React.FC = () => {
                           variant="body2"
                           sx={{
                             fontWeight: 600,
-                            color: '#1F2937',
+                            color: '#F9FAFB',
                             fontFamily: '"Cairo", sans-serif',
                           }}
                         >
@@ -541,7 +553,7 @@ const Dashboard: React.FC = () => {
                         <Typography
                           variant="caption"
                           sx={{
-                            color: '#64748B',
+                            color: '#D1D5DB',
                             fontSize: '0.75rem',
                           }}
                         >
@@ -605,7 +617,7 @@ const Dashboard: React.FC = () => {
                   <Typography
                     variant="body2"
                     sx={{
-                      color: '#64748B',
+                      color: '#D1D5DB',
                       fontFamily: '"Cairo", sans-serif',
                     }}
                   >
