@@ -190,7 +190,7 @@ export class PaymentsService {
     const lessonsPaid = parseInt(totalPaidResult.lessonsCount) || 0;
     const amountPaid = parseFloat(totalPaidResult.amount) || 0;
     const lessonsCompleted = student.totalLessonsCompleted;
-    const lessonsRemaining = lessonsPaid - lessonsCompleted;
+    const lessonsRemaining = Math.max(0, lessonsPaid - lessonsCompleted);
     const amountDue = Math.max(0, lessonsCompleted - lessonsPaid) * student.pricePerHour;
 
     return {
