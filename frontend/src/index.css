@@ -4,20 +4,20 @@
 
 /* Root Variables */
 :root {
-  --primary-color: #4A90E2;
-  --secondary-color: #16A34A;
-  --accent-color: #FFB347;
-  --success-color: #10B981;
-  --warning-color: #F59E0B;
+  --primary-color: #1E40AF;
+  --secondary-color: #0D9488;
+  --accent-color: #F97316;
+  --success-color: #059669;
+  --warning-color: #D97706;
   --error-color: #EF4444;
-  --text-primary: #1F2937;
-  --text-secondary: #64748B;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
   --text-muted: #9CA3AF;
-  --background-primary: #FFFFFF;
-  --background-secondary: #F8FAFC;
-  --border-color: #E2E8F0;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  --background-primary: #1F2937;
+  --background-secondary: #111827;
+  --border-color: #374151;
+  --glass-bg: rgba(31, 41, 55, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -52,10 +52,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, 
-    rgba(74, 144, 226, 0.08) 0%, 
-    rgba(80, 200, 120, 0.05) 50%, 
-    rgba(255, 179, 71, 0.08) 100%);
+  background: linear-gradient(135deg,
+    rgba(30, 58, 138, 0.6) 0%,
+    rgba(17, 24, 39, 0.95) 100%);
   color: var(--text-primary);
   line-height: 1.6;
   direction: rtl;

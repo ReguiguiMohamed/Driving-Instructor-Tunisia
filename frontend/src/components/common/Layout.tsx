@@ -74,27 +74,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         flexDirection: 'column',
         minHeight: '100vh',
         direction: 'rtl',
-        background: `
-          linear-gradient(135deg, 
-            rgba(74, 144, 226, 0.1) 0%, 
-            rgba(80, 200, 120, 0.05) 50%, 
-            rgba(255, 193, 7, 0.1) 100%
-          ),
-          linear-gradient(45deg, 
-            rgba(255, 255, 255, 0.9) 0%, 
-            rgba(248, 250, 252, 0.8) 100%
-          )
-        `,
+        background: `linear-gradient(135deg,
+            rgba(30, 58, 138, 0.6) 0%,
+            rgba(17, 24, 39, 0.95) 100%)`,
         backgroundAttachment: 'fixed',
       }}
     >
       {/* Top App Bar */}
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          background: 'linear-gradient(135deg, #2563EB 0%, #16A34A 100%)',
+      <AppBar
+        position="fixed"
+        sx={{
+          background: 'linear-gradient(135deg, #1E40AF 0%, #0D9488 100%)',
           backdropFilter: 'blur(20px)',
-          boxShadow: '0 8px 32px rgba(74, 144, 226, 0.2)',
+          boxShadow: '0 8px 32px rgba(30, 58, 138, 0.3)',
           zIndex: theme.zIndex.drawer + 1,
         }}
       >
@@ -208,10 +200,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             left: 0,
             right: 0,
             zIndex: theme.zIndex.drawer + 1,
-            background: 'rgba(255, 255, 255, 0.95)',
+            background: 'rgba(31, 41, 55, 0.95)',
             backdropFilter: 'blur(20px)',
-            borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.5)',
           }}
           elevation={0}
         >
@@ -223,18 +215,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 minWidth: 'auto',
                 padding: '8px 12px 10px',
                 '&.Mui-selected': {
-                  color: '#4A90E2',
+                  color: '#1E40AF',
                   '& .MuiBottomNavigationAction-label': {
                     fontSize: '0.75rem',
                     fontWeight: 600,
                   },
                   '& .MuiSvgIcon-root': {
                     transform: 'scale(1.2)',
-                    filter: 'drop-shadow(0 2px 4px rgba(74, 144, 226, 0.3))',
+                    filter: 'drop-shadow(0 2px 4px rgba(30, 58, 138, 0.4))',
                   }
                 },
                 '&:not(.Mui-selected)': {
-                  color: '#64748B',
+                  color: '#D1D5DB',
                 },
                 '& .MuiBottomNavigationAction-label': {
                   fontFamily: '"Cairo", sans-serif',
@@ -254,7 +246,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 to={item.path}
                 sx={{
                   '&:hover': {
-                    backgroundColor: 'rgba(74, 144, 226, 0.08)',
+                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
                     borderRadius: '12px',
                   }
                 }}
@@ -273,9 +265,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             top: '88px',
             bottom: 0,
             width: '80px',
-            background: 'rgba(255, 255, 255, 0.9)',
+            background: 'rgba(31, 41, 55, 0.9)',
             backdropFilter: 'blur(20px)',
-            borderLeft: '1px solid rgba(0, 0, 0, 0.05)',
+            borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
             zIndex: theme.zIndex.drawer,
             display: 'flex',
             flexDirection: 'column',
@@ -296,17 +288,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   width: '56px',
                   height: '56px',
                   borderRadius: '16px',
-                  backgroundColor: isActive 
-                    ? 'rgba(74, 144, 226, 0.1)' 
+                  backgroundColor: isActive
+                    ? 'rgba(30, 58, 138, 0.2)'
                     : 'transparent',
-                  color: isActive ? '#4A90E2' : '#64748B',
-                  border: isActive 
-                    ? '2px solid rgba(74, 144, 226, 0.2)' 
+                  color: isActive ? '#1E40AF' : '#D1D5DB',
+                  border: isActive
+                    ? '2px solid rgba(30, 58, 138, 0.3)'
                     : '2px solid transparent',
                   '&:hover': {
-                    backgroundColor: 'rgba(74, 144, 226, 0.08)',
+                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 4px 16px rgba(74, 144, 226, 0.2)',
+                    boxShadow: '0 4px 16px rgba(30, 58, 138, 0.4)',
                   },
                   transition: 'all 0.3s ease',
                   '& .MuiSvgIcon-root': {
