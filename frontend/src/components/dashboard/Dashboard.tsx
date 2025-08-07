@@ -26,6 +26,7 @@ import { getLessons } from '../../services/lessonService';
 import { getPayments } from '../../services/paymentService';
 import { Student, Lesson, Payment } from '../../types';
 import { formatCurrency } from '../../utils/currency';
+import Loading from '../common/Loading';
 
 interface DashboardStats {
   totalStudents: number;
@@ -281,28 +282,14 @@ const Dashboard: React.FC = () => {
   }, []);
 
   if (loading) {
-    return (
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3, fontFamily: '"Amiri", serif', color: '#1F2937' }}>
-          جاري التحميل...
-        </Typography>
-        <Grid container spacing={3}>
-          {/* FIXED: Using the 'size' prop as required by your project's MUI version */}
-          {[1, 2, 3, 4].map((item) => (
-            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={item}>
-              <Card sx={{ height: 160, background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)', backgroundSize: '1000px 100%', animation: 'shimmer 2s infinite' }} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-    );
+    return <Loading />;
   }
 
   const completionRate = stats.totalLessons > 0 ? (stats.completedLessons / stats.totalLessons) * 100 : 0;
   const activeRate = stats.totalStudents > 0 ? (stats.activeStudents / stats.totalStudents) * 100 : 0;
 
   return (
-    <Box sx={{ p: isMobile ? 2 : 3 }}>
+    <Box sx={{ p: isMobile ? 2 : 3 }} className="fade-in">
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Typography
