@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "https://drivinginstructorapp-production.up.railway.app",
   "dependencies": {
     "@capacitor-community/sqlite": "^7.0.1",
     "@capacitor/android": "^7.4.2",

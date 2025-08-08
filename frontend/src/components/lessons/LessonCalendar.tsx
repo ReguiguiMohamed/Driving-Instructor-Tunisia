@@ -5,6 +5,7 @@ import { getStudents } from '../../services/studentService';
 import LessonForm from './LessonForm';
 import Loading from '../common/Loading';
 import LessonCard from './LessonCard';
+import useOfflineStorage from '../../hooks/useOfflineStorage';
 import {
   Box,
   Typography,
@@ -28,18 +29,36 @@ const LessonCalendar: React.FC = () => {
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [dialogTitle, setDialogTitle] = useState('إضافة درس جديد');
   const [loading, setLoading] = useState(true);
+  const {
+    getData: getLessonsData,
+    isOnline: lessonsOnline,
+    syncData: syncLessons,
+  } = useOfflineStorage<Lesson[]>('lessons', getLessons);
+  const {
+    getData: getStudentsData,
+    isOnline: studentsOnline,
+    syncData: syncStudents,
+  } = useOfflineStorage<Student[]>('students', getStudents);
 
   useEffect(() => {
     (async () => {
       try {
-        const [lessonData, studentData] = await Promise.all([getLessons(), getStudents()]);
+        const [lessonData, studentData] = await Promise.all([
+          getLessonsData(),
+          getStudentsData(),
+        ]);
         setLessons(lessonData);
         setStudents(studentData);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [getLessonsData, getStudentsData]);
+
+  useEffect(() => {
+    syncLessons();
+    syncStudents();
+  }, [lessonsOnline, studentsOnline, syncLessons, syncStudents]);
 
   const handleOpen = (lesson?: Lesson) => {
     if (lesson) {

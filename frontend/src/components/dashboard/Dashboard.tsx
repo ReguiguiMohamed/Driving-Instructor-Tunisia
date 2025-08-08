@@ -29,6 +29,7 @@ import { getPayments } from '../../services/paymentService';
 import { Student, Lesson, Payment } from '../../types';
 import { formatCurrency } from '../../utils/currency';
 import Loading from '../common/Loading';
+import useOfflineStorage from '../../hooks/useOfflineStorage';
 
 interface DashboardStats {
   totalStudents: number;
@@ -231,13 +232,29 @@ const Dashboard: React.FC = () => {
   const [upcomingLessons, setUpcomingLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const {
+    getData: getStudentsData,
+    isOnline: studentsOnline,
+    syncData: syncStudents,
+  } = useOfflineStorage<Student[]>('students', getStudents);
+  const {
+    getData: getLessonsData,
+    isOnline: lessonsOnline,
+    syncData: syncLessons,
+  } = useOfflineStorage<Lesson[]>('lessons', getLessons);
+  const {
+    getData: getPaymentsData,
+    isOnline: paymentsOnline,
+    syncData: syncPayments,
+  } = useOfflineStorage<Payment[]>('payments', getPayments);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const [studentsData, lessonsData, paymentsData] = await Promise.all([
-          getStudents(),
-          getLessons(),
-          getPayments(),
+          getStudentsData(),
+          getLessonsData(),
+          getPaymentsData(),
         ]);
 
         // Calculate stats
@@ -289,6 +306,12 @@ const Dashboard: React.FC = () => {
 
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+    syncStudents();
+    syncLessons();
+    syncPayments();
+  }, [studentsOnline, lessonsOnline, paymentsOnline, syncStudents, syncLessons, syncPayments]);
 
   if (loading) {
     return <Loading />;

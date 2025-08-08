@@ -38,6 +38,7 @@ import { getStudents, createStudent, deleteStudent, updateStudent } from '../../
 import { formatCurrency } from '../../utils/currency';
 import StudentCard from './StudentCard';
 import Loading from '../common/Loading';
+import useOfflineStorage from '../../hooks/useOfflineStorage';
 
 const StudentList: React.FC = () => {
   const theme = useTheme();
@@ -60,10 +61,15 @@ const StudentList: React.FC = () => {
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const { isOnline, getData, syncData } = useOfflineStorage<Student[]>(
+    'students',
+    getStudents
+  );
+
   useEffect(() => {
     (async () => {
       try {
-        const list = await getStudents();
+        const list = await getData();
         setStudents(list);
         setFiltered(list);
       } catch (err) {
@@ -72,7 +78,11 @@ const StudentList: React.FC = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [getData]);
+
+  useEffect(() => {
+    syncData();
+  }, [isOnline, syncData]);
 
   // filter as user types
   useEffect(() => {
