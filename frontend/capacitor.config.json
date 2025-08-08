@@ -1,0 +1,6 @@
+{
+  "appId": "com.company.appname",
+  "appName": "Fayrouz Driving App",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}
