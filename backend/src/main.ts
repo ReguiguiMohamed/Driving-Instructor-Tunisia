@@ -8,18 +8,22 @@ import { AllExceptionsFilter } from './common/filters/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable CORS for your mobile app
   app.enableCors({
     origin: true,
     credentials: true,
   });
   
-  // Use Railway's assigned port, fallback to 8080 for local development
   const port = process.env.PORT || 8080;
   
-  // Bind to 0.0.0.0 so Railway can access it
   await app.listen(port, '0.0.0.0');
   
-  console.log(`🚀 Application is running on: ${await app.getUrl()}`);
+  // Better console message
+  console.log(`🚀 Application is running on port ${port}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  
+  // Log Railway-specific info
+  if (process.env.RAILWAY_ENVIRONMENT) {
+    console.log(`🚂 Railway Environment: ${process.env.RAILWAY_ENVIRONMENT}`);
+  }
 }
 bootstrap();
