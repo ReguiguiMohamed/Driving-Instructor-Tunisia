@@ -34,6 +34,8 @@ import {
   Event,
   Description,
   ConfirmationNumber,
+  ExpandLess,
+  ExpandMore,
 } from '@mui/icons-material';
 import { Payment, Student } from '../../types';
 import Loading from '../common/Loading';
@@ -41,10 +43,10 @@ import { getPayments, createPayment, updatePayment, deletePayment } from '../../
 import { getStudents } from '../../services/studentService';
 import { formatCurrency } from '../../utils/currency';
 
-// Component to render a single payment card
 const PaymentCard: React.FC<{ payment: Payment; student?: Student; onEdit: () => void; onDelete: () => void; }> = ({ payment, student, onEdit, onDelete }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [expanded, setExpanded] = useState(false);
 
   const getPaymentMethodIcon = (method: string) => {
     switch (method) {
@@ -57,52 +59,63 @@ const PaymentCard: React.FC<{ payment: Payment; student?: Student; onEdit: () =>
   return (
     <Card
       sx={{
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'rgba(0, 0, 0, 0.9)',
         backdropFilter: 'blur(20px)',
-        borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-        transition: 'all 0.3s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-        },
+        borderRadius: 2,
+        border: '1px solid rgba(255,255,255,0.2)',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
       <CardContent sx={{ p: isMobile ? 2 : 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
           <Avatar sx={{ background: `linear-gradient(135deg, #2563EB, #16A34A)`, color: 'white' }}>
             <Receipt />
           </Avatar>
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1F2937' }}>
+          <Box sx={{ flex: 1, ml: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#FFFFFF' }}>
               {formatCurrency(payment.amount)}
             </Typography>
-            <Typography variant="body2" sx={{ color: '#64748B' }}>
+            <Typography variant="body2" sx={{ color: '#A1A1AA' }}>
               {student ? `${student.firstName} ${student.lastName}` : 'طالب غير معروف'}
             </Typography>
           </Box>
-          <Box>
-            <IconButton size="small" onClick={onEdit} sx={{ color: theme.palette.primary.main }}><Edit fontSize="small" /></IconButton>
-            <IconButton size="small" onClick={onDelete} sx={{ color: theme.palette.error.main }}><Delete fontSize="small" /></IconButton>
-          </Box>
+          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#2563EB' }}>
+            {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+          </IconButton>
         </Box>
-        <Grid container spacing={1} sx={{ color: '#64748B' }}>
-          <Grid size={{xs: 6}} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {getPaymentMethodIcon(payment.paymentMethod)}
-            <Typography variant="caption">{payment.paymentMethod}</Typography>
-          </Grid>
-          <Grid size={{xs: 6}} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Event sx={{ fontSize: '1rem' }} />
-            <Typography variant="caption">{new Date(payment.paymentDate).toLocaleDateString('ar-TN')}</Typography>
-          </Grid>
-          {payment.receiptNumber && (
-            <Grid size={{xs: 12}} sx={{ display: 'flex', alignItems: 'center', gap: 1, mt:1 }}>
-              <ConfirmationNumber sx={{ fontSize: '1rem' }} />
-              <Typography variant="caption">إيصال رقم: {payment.receiptNumber}</Typography>
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Grid container spacing={1} sx={{ color: '#A1A1AA', mt: 2 }}>
+            <Grid size={{xs: 6}} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {getPaymentMethodIcon(payment.paymentMethod)}
+              <Typography variant="caption">{payment.paymentMethod}</Typography>
             </Grid>
-          )}
-        </Grid>
+            <Grid size={{xs: 6}} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Event sx={{ fontSize: '1rem' }} />
+              <Typography variant="caption">{new Date(payment.paymentDate).toLocaleDateString('ar-TN')}</Typography>
+            </Grid>
+            {payment.receiptNumber && (
+              <Grid size={{xs: 12}} sx={{ display: 'flex', alignItems: 'center', gap: 1, mt:1 }}>
+                <ConfirmationNumber sx={{ fontSize: '1rem' }} />
+                <Typography variant="caption">إيصال رقم: {payment.receiptNumber}</Typography>
+              </Grid>
+            )}
+          </Grid>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>
+            <Button size="small" onClick={onEdit} startIcon={<Edit fontSize="small" />}>
+              تعديل
+            </Button>
+            <Button
+              size="small"
+              color="error"
+              onClick={onDelete}
+              startIcon={<Delete fontSize="small" />}
+            >
+              حذف
+            </Button>
+          </Box>
+        </Collapse>
       </CardContent>
     </Card>
   );
@@ -180,7 +193,6 @@ const PaymentTracker: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Ensure studentId is a number
     if (!form.studentId) {
         setAlert({ type: 'error', message: 'الرجاء اختيار طالب' });
         return;
@@ -188,11 +200,11 @@ const PaymentTracker: React.FC = () => {
     const paymentData = { ...form, studentId: +form.studentId };
 
     try {
-      if (form.id) { // Update existing payment
+      if (form.id) {
         const updated = await updatePayment(form.id, paymentData as Payment);
         setPayments(payments.map(p => (p.id === form.id ? updated : p)));
         setAlert({ type: 'success', message: 'تم تحديث الدفعة بنجاح' });
-      } else { // Create new payment
+      } else { 
         const created = await createPayment(paymentData as Omit<Payment, 'id'>);
         setPayments([created, ...payments]);
         setAlert({ type: 'success', message: 'تمت إضافة الدفعة بنجاح' });
@@ -283,20 +295,6 @@ const PaymentTracker: React.FC = () => {
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
-                <FormControl fullWidth required>
-                  <InputLabel>طريقة الدفع</InputLabel>
-                  <Select
-                    value={form.paymentMethod}
-                    label="طريقة الدفع"
-                    onChange={(e) => handleChange('paymentMethod', e.target.value)}
-                  >
-                    <MenuItem value="cash">نقداً</MenuItem>
-                    <MenuItem value="card">بطاقة</MenuItem>
-                    <MenuItem value="bank_transfer">تحويل بنكي</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   label="تاريخ الدفع"
                   type="date"
@@ -313,14 +311,6 @@ const PaymentTracker: React.FC = () => {
                   fullWidth
                   value={form.lessonsCount || ''}
                   onChange={(e) => handleChange('lessonsCount', +e.target.value)}
-                />
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <TextField
-                  label="رقم الإيصال"
-                  fullWidth
-                  value={form.receiptNumber}
-                  onChange={(e) => handleChange('receiptNumber', e.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>

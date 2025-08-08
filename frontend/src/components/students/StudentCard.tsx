@@ -54,55 +54,20 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
     }
   };
 
-  // Calculate counts and balances
   const completedLessonsCount = student.totalLessonsCompleted;
   const pricePerHour = student.pricePerHour;
   const paidLessonsCount = Math.floor(student.totalAmountPaid / pricePerHour);
   const remainingLessonsCount = completedLessonsCount - paidLessonsCount;
   const balanceAmount = completedLessonsCount * pricePerHour - student.totalAmountPaid;
 
-  // Stats array
-  const stats = [
-    {
-      label: 'دروس مكتملة',
-      value: completedLessonsCount,
-      isCurrency: false as const,
-      color: '#2563EB', // Blue-600
-    },
-    {
-      label: 'دروس مدفوعة',
-      value: paidLessonsCount,
-      isCurrency: false as const,
-      color: '#16A34A', // Green-600
-    },
-    {
-      label: balanceAmount > 0 ? 'مستحق' : 'مدفوع',
-      value: Math.abs(balanceAmount),
-      isCurrency: true as const,
-      color: balanceAmount > 0 ? '#DC2626' : '#16A34A', // Red-600 or Green-600
-    },
-    {
-      label: 'متبقية',
-      value: remainingLessonsCount,
-      isCurrency: false as const,
-      color: remainingLessonsCount > 0 ? '#F59E0B' : '#6B7280', // Amber-500 or Gray-500
-    },
-  ];
-
   return (
     <Card
       sx={{
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'rgba(0, 0, 0, 0.9)',
         backdropFilter: 'blur(20px)',
-        borderRadius: '20px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+        borderRadius: 2,
+        border: '1px solid rgba(255,255,255,0.2)',
         overflow: 'hidden',
-        transition: 'all 0.3s ease',
-        '&:hover': {
-          transform: 'translateY(-2px)',
-          boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)',
-        },
         position: 'relative',
         '&::before': {
           content: '""',
@@ -116,8 +81,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
       }}
     >
       <CardContent sx={{ p: isMobile ? 2 : 3 }}>
-        {/* Header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
           <Avatar
             sx={{
               background: `linear-gradient(135deg, ${getStatusColor(student.status)}20, ${getStatusColor(student.status)}10)`,
@@ -131,7 +95,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
           <Box sx={{ ml: 2, flex: 1, minWidth: 0 }}>
             <Typography
               variant={isMobile ? 'h6' : 'h5'}
-              sx={{ fontWeight: 700, color: '#1F2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              sx={{ fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
               {student.firstName} {student.lastName}
             </Typography>
@@ -141,34 +105,31 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
               sx={{ mt: 1, background: `${getStatusColor(student.status)}15`, color: getStatusColor(student.status), fontWeight: 600 }}
             />
           </Box>
-          <Box>
-            <IconButton onClick={() => onEdit(student)} size="small" sx={{ mr: 1, color: '#2563EB' }}>
-              <Edit fontSize="small" />
-            </IconButton>
-            <IconButton onClick={() => setExpanded(!expanded)} size="small" sx={{ color: '#16A34A' }}>
-              {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
-            </IconButton>
-          </Box>
+          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#2563EB' }}>
+            {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+          </IconButton>
         </Box>
 
-        {/* Stats */}
-        <Grid container spacing={1} sx={{ mb: 1 }}>
-          {stats.map((stat, idx) => (
-            <Grid key={idx} size={{ xs: 6, sm: 3 }}>
-              <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: stat.color }}>
-                  {stat.isCurrency ? formatCurrency(stat.value) : stat.value}
-                </Typography>
-                <Typography variant="caption" sx={{ color: '#64748B' }}>
-                  {stat.label}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Details */}
         <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Grid container spacing={1} sx={{ mb: 1 }}>
+            {[
+              { label: 'دروس مكتملة', value: completedLessonsCount, color: '#2563EB' },
+              { label: 'دروس مدفوعة', value: paidLessonsCount, color: '#16A34A' },
+              { label: balanceAmount > 0 ? 'مستحق' : 'مدفوع', value: formatCurrency(Math.abs(balanceAmount)), color: balanceAmount > 0 ? '#DC2626' : '#16A34A' },
+              { label: 'متبقية', value: remainingLessonsCount, color: remainingLessonsCount > 0 ? '#F59E0B' : '#6B7280' },
+            ].map((stat, idx) => (
+              <Grid size={{ xs: 6, sm: 3 }} key={idx}>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 700, color: stat.color }}>
+                    {stat.value}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#64748B' }}>
+                    {stat.label}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
           <Box sx={{ mt: 1, p: 2, background: 'rgba(248,250,252,0.6)', borderRadius: 1 }}>
             <Typography variant="body2" sx={{ mb: 1 }}>
               <Phone fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {student.phoneNumber}
@@ -179,16 +140,19 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
             <Typography variant="body2">
               <Schedule fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {new Date(student.dateOfBirth).toLocaleDateString('ar-TN')}
             </Typography>
-            <Box sx={{ textAlign: 'right', mt: 2 }}>
-              <Button
-                size="small"
-                onClick={() => onDelete(student.id)}
-                sx={{ color: '#EF4444' }}
-                startIcon={<DeleteIcon fontSize="small" />}
-              >
-                حذف
-              </Button>
-            </Box>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>
+            <Button size="small" onClick={() => onEdit(student)} startIcon={<Edit fontSize="small" />}>
+              تعديل
+            </Button>
+            <Button
+              size="small"
+              color="error"
+              onClick={() => onDelete(student.id)}
+              startIcon={<DeleteIcon fontSize="small" />}
+            >
+              حذف
+            </Button>
           </Box>
         </Collapse>
       </CardContent>

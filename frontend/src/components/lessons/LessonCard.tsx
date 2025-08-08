@@ -51,7 +51,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDele
   return (
     <Card
       sx={{
-        background: 'rgba(255,255,255,0.9)',
+        background: 'rgba(0, 0, 0, 0.9)',
         backdropFilter: 'blur(20px)',
         borderRadius: 2,
         border: '1px solid rgba(255,255,255,0.2)',
