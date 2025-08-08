@@ -59,7 +59,7 @@ export class NotificationsService {
       if (!exists) {
         const notification = this.notificationsRepository.create({
           title: 'تذكير بالدرس',
-          message: `لديك درس مع ${lesson.student?.name || ''} في ${lesson.scheduledDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+          message: `لديك درس مع ${lesson.student?.firstName || ''}${lesson.student?.lastName || ''} في ${lesson.scheduledDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           scheduledDateTime: lesson.scheduledDateTime,
           lessonId: lesson.id,
         });
