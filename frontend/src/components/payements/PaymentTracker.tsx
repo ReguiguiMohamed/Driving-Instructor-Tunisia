@@ -42,6 +42,7 @@ import Loading from '../common/Loading';
 import { getPayments, createPayment, updatePayment, deletePayment } from '../../services/paymentService';
 import { getStudents } from '../../services/studentService';
 import { formatCurrency } from '../../utils/currency';
+import useOfflineStorage from '../../hooks/useOfflineStorage';
 
 const PaymentCard: React.FC<{ payment: Payment; student?: Student; onEdit: () => void; onDelete: () => void; }> = ({ payment, student, onEdit, onDelete }) => {
   const theme = useTheme();
@@ -142,22 +143,40 @@ const PaymentTracker: React.FC = () => {
   const [dialogTitle, setDialogTitle] = useState('إضافة دفعة جديدة');
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const {
+    getData: getPaymentsData,
+    isOnline: paymentsOnline,
+    syncData: syncPayments,
+  } = useOfflineStorage<Payment[]>('payments', getPayments);
+  const {
+    getData: getStudentsData,
+    isOnline: studentsOnline,
+    syncData: syncStudents,
+  } = useOfflineStorage<Student[]>('students', getStudents);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [paymentsData, studentsData] = await Promise.all([getPayments(), getStudents()]);
+        const [paymentsData, studentsData] = await Promise.all([
+          getPaymentsData(),
+          getStudentsData(),
+        ]);
         setPayments(paymentsData);
         setStudents(studentsData);
       } catch (error) {
-        console.error("Failed to fetch data:", error);
+        console.error('Failed to fetch data:', error);
         setAlert({ type: 'error', message: 'فشل تحميل البيانات' });
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [getPaymentsData, getStudentsData]);
+
+  useEffect(() => {
+    syncPayments();
+    syncStudents();
+  }, [paymentsOnline, studentsOnline, syncPayments, syncStudents]);
 
   const handleOpen = (payment?: Payment) => {
     if (payment) {
