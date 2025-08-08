@@ -106,7 +106,7 @@ const LessonCalendar: React.FC = () => {
         {lessons.map(lesson => (
           // FIXED: Changed 'item' and 'xs' props to the 'size' prop.
           <Grid size={{ xs: 12 }} key={lesson.id}>
-            <Card sx={{ backdropFilter: 'blur(16px)', background: 'rgba(255,255,255,0.7)', borderRadius: 2 }}>
+            <Card sx={{ backdropFilter: 'blur(16px)', background: 'rgba(55, 57, 55, 1)', borderRadius: 2 }}>
               <CardContent>
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   الطالب: {students.find(s => s.id === lesson.studentId)?.firstName} {' '}

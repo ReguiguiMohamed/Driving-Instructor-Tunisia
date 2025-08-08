@@ -167,7 +167,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Paper
           elevation={0}
           sx={{
-            background: 'rgba(255, 255, 255, 0.7)',
+            background: 'rgba(255, 11, 11, 0)',
             backdropFilter: 'blur(20px)',
             borderRadius: '24px',
             border: '1px solid rgba(255, 255, 255, 0.2)',
