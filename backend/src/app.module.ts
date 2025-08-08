@@ -11,6 +11,8 @@ import { Student } from './entities/student.entity';
 import { Lesson } from './entities/lesson.entity';
 import { Payment } from './entities/payment.entity';
 import { Settings } from './entities/settings.entity';
+import { NotificationsModule } from './notifications/notifications.module';
+import { Notification } from './entities/notification.entity';
 
 @Module({
   imports: [
@@ -20,7 +22,7 @@ import { Settings } from './entities/settings.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'fayrouz_driving.db',
-      entities: [Student, Lesson, Payment, Settings],
+      entities: [Student, Lesson, Payment, Settings, Notification],
       synchronize: true, // Only for development
       logging: false,
     }),
@@ -28,6 +30,7 @@ import { Settings } from './entities/settings.entity';
     LessonsModule,
     PaymentsModule,
     SettingsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
