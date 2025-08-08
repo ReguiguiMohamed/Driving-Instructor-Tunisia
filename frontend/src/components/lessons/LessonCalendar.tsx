@@ -4,16 +4,14 @@ import { getLessons, createLesson, updateLesson, deleteLesson } from '../../serv
 import { getStudents } from '../../services/studentService';
 import LessonForm from './LessonForm';
 import Loading from '../common/Loading';
+import LessonCard from './LessonCard';
 import {
   Box,
   Typography,
   Grid,
-  Card,
-  CardContent,
   Dialog,
   DialogTitle,
   DialogContent,
-  Button,
   useTheme,
   useMediaQuery,
   Fab,
@@ -85,10 +83,17 @@ const LessonCalendar: React.FC = () => {
     return <Loading />;
   }
 
+  const todayLessons = lessons.filter(l => {
+    const d = new Date(l.scheduledDateTime);
+    const now = new Date();
+    return d.toDateString() === now.toDateString() && l.status !== 'completed';
+  });
+
   return (
     <Box
       sx={{
         p: isMobile ? 2 : 3,
+        pb: 10,
         bgcolor: 'background.default',
         minHeight: '100vh',
         position: 'relative',
@@ -102,29 +107,24 @@ const LessonCalendar: React.FC = () => {
         الجدول الزمني للدروس
       </Typography>
 
-      <Grid container spacing={2}>
+      {todayLessons.length > 0 && (
+        <Typography
+          variant="subtitle1"
+          sx={{ mb: 2, fontWeight: 600, color: 'warning.main', textAlign: 'center' }}
+        >
+          لديك {todayLessons.length} دروس اليوم
+        </Typography>
+      )}
+
+      <Grid container spacing={3}>
         {lessons.map(lesson => (
-          // FIXED: Changed 'item' and 'xs' props to the 'size' prop.
-          <Grid size={{ xs: 12 }} key={lesson.id}>
-            <Card sx={{ backdropFilter: 'blur(16px)', background: 'rgba(55, 57, 55, 1)', borderRadius: 2 }}>
-              <CardContent>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                  الطالب: {students.find(s => s.id === lesson.studentId)?.firstName} {' '}
-                  {students.find(s => s.id === lesson.studentId)?.lastName}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-                  {new Date(lesson.scheduledDateTime).toLocaleDateString('ar-TN')} {' '}
-                  {new Date(lesson.scheduledDateTime).toLocaleTimeString('ar-TN', { hour: '2-digit', minute: '2-digit' })}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  المدة: {lesson.durationMinutes} دقيقة
-                </Typography>
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button size="small" onClick={() => handleOpen(lesson)}>تعديل</Button>
-                  <Button size="small" color="error" onClick={() => handleDeleteLesson(lesson.id)}>حذف</Button>
-                </Box>
-              </CardContent>
-            </Card>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={lesson.id}>
+            <LessonCard
+              lesson={lesson}
+              student={students.find(s => s.id === lesson.studentId)}
+              onEdit={() => handleOpen(lesson)}
+              onDelete={handleDeleteLesson}
+            />
           </Grid>
         ))}
       </Grid>
