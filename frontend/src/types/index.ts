@@ -50,3 +50,14 @@ export interface Payment {
   updatedAt: Date;
   student?: Student;
 }
+
+export interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  scheduledDateTime: Date;
+  isSent: boolean;
+  lessonId?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}

@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   IconButton,
   Avatar,
+  Badge,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
@@ -19,6 +20,8 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentIcon from '@mui/icons-material/Payment';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { getPendingNotifications } from '../../services/notificationService';
+import { Notification } from '../../types';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,6 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [pendingNotifications, setPendingNotifications] = useState<Notification[]>([]);
 
   // Update time every minute
   useEffect(() => {
@@ -43,6 +47,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       setCurrentTime(new Date());
     }, 60000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const data = await getPendingNotifications();
+        setPendingNotifications(data);
+      } catch (error) {
+        console.error('Failed to fetch notifications', error);
+      }
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const getCurrentNavIndex = () => {
@@ -136,17 +155,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             >
               {formatTime(currentTime)}
             </Typography>
-            <IconButton 
-              sx={{ 
+            <IconButton
+              sx={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                '&:hover': { 
+                '&:hover': {
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   transform: 'scale(1.1)',
                 },
                 transition: 'all 0.3s ease',
               }}
             >
-              <NotificationsIcon />
+              <Badge badgeContent={pendingNotifications.length} color="error">
+                <NotificationsIcon />
+              </Badge>
             </IconButton>
           </Box>
         </Toolbar>
