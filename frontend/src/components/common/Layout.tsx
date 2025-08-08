@@ -20,8 +20,9 @@ import EventIcon from '@mui/icons-material/Event';
 import PaymentIcon from '@mui/icons-material/Payment';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { getPendingNotifications } from '../../services/notificationService';
+import { getPendingNotifications, markNotificationAsSent } from '../../services/notificationService';
 import { Notification } from '../../types';
+import NotificationMenu from './NotificationMenu';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +41,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [currentTime, setCurrentTime] = useState(new Date());
   const [pendingNotifications, setPendingNotifications] = useState<Notification[]>([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMarkAsRead = async (id: number) => {
+    try {
+      await markNotificationAsSent(id);
+      setPendingNotifications(prev => prev.filter(n => n.id !== id));
+    } catch (error) {
+      console.error('Failed to mark notification as read', error);
+    }
+  };
 
   // Update time every minute
   useEffect(() => {
@@ -156,6 +175,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               {formatTime(currentTime)}
             </Typography>
             <IconButton
+              onClick={handleNotificationClick}
               sx={{
                 color: 'rgba(255, 255, 255, 0.8)',
                 '&:hover': {
@@ -169,6 +189,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <NotificationMenu 
+              notifications={pendingNotifications}
+              anchorEl={anchorEl}
+              onClose={handleNotificationClose}
+              onMarkAsRead={handleMarkAsRead}
+            />
           </Box>
         </Toolbar>
       </AppBar>

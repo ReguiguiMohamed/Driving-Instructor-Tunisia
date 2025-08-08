@@ -22,7 +22,7 @@ export interface Student {
 export interface Lesson {
   id: number;
   studentId: number;
-  scheduledDateTime: Date;
+  scheduledDateTime: string;
   durationMinutes: number;
   status: string;
   lessonType: string;
@@ -31,8 +31,8 @@ export interface Lesson {
   rating: number;
   lessonPrice: number;
   isPaid: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   student?: Student;
 }
 
@@ -46,8 +46,8 @@ export interface Payment {
   description: string;
   receiptNumber: string;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   student?: Student;
 }
 
@@ -55,9 +55,9 @@ export interface Notification {
   id: number;
   title: string;
   message: string;
-  scheduledDateTime: Date;
+  scheduledDateTime: string;
   isSent: boolean;
   lessonId?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }

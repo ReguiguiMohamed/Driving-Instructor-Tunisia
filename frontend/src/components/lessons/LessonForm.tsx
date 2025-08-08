@@ -44,7 +44,7 @@ const LessonForm: React.FC<Props> = ({ students, onSubmit, initialData }) => {
     e.preventDefault();
     onSubmit({
       studentId: Number(studentId),
-      scheduledDateTime: new Date(scheduledDateTime),
+      scheduledDateTime,
       durationMinutes,
       status: 'scheduled',
       lessonType,
