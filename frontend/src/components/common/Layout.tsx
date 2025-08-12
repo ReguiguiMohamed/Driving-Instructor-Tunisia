@@ -205,7 +205,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         sx={{
           flexGrow: 1,
           pt: isMobile ? '80px' : '88px',
-          pb: isMobile ? '80px' : '24px',
+          pb: isMobile ? 'calc(110px + env(safe-area-inset-bottom))' : '24px',
           px: isMobile ? 1 : 3,
           minHeight: '100vh',
         }}
@@ -238,70 +238,67 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </Paper>
       </Box>
 
-      {/* Bottom Navigation for Mobile */}
+       {/* Bottom Navigation for Mobile */}
       {isMobile && (
-        <Paper
+        <Box
           sx={{
             position: 'fixed',
-            bottom: 0,
             left: 0,
             right: 0,
+            bottom: 'max(env(safe-area-inset-bottom), 12px)',  // sit above the gesture area
             zIndex: theme.zIndex.drawer + 1,
-            background: 'rgba(31, 41, 55, 0.95)',
-            backdropFilter: 'blur(20px)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.5)',
-            paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
+            display: 'flex',
+            justifyContent: 'center',
+            pointerEvents: 'none', // let only the dock receive clicks
           }}
-          elevation={0}
         >
-          <BottomNavigation
-            value={getCurrentNavIndex()}
+          <Paper
+            elevation={8}
             sx={{
-              backgroundColor: 'transparent',
-              '& .MuiBottomNavigationAction-root': {
-                minWidth: 'auto',
-                padding: '8px 12px 10px',
-                '&.Mui-selected': {
-                  color: '#1E40AF',
-                  '& .MuiBottomNavigationAction-label': {
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                  },
-                  '& .MuiSvgIcon-root': {
-                    transform: 'scale(1.2)',
-                    filter: 'drop-shadow(0 2px 4px rgba(30, 58, 138, 0.4))',
-                  }
-                },
-                '&:not(.Mui-selected)': {
-                  color: '#D1D5DB',
-                },
-                '& .MuiBottomNavigationAction-label': {
-                  fontFamily: '"Cairo", sans-serif',
-                  fontSize: '0.7rem',
-                  marginTop: '4px',
-                },
-                transition: 'all 0.3s ease',
-              }
+              pointerEvents: 'auto',
+              background: 'rgba(31, 41, 55, 0.92)',
+              backdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
+              borderRadius: '20px',
+              px: 1,
+              py: 0.5,
+              width: 'min(640px, calc(100% - 24px))',            // inset from edges
             }}
           >
-            {navigationItems.map((item, index) => (
-              <BottomNavigationAction
-                key={item.path}
-                label={item.label}
-                icon={<item.icon />}
-                component={Link}
-                to={item.path}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
-                    borderRadius: '12px',
-                  }
-                }}
-              />
-            ))}
-          </BottomNavigation>
-        </Paper>
+            <BottomNavigation
+              value={getCurrentNavIndex()}
+              sx={{
+                backgroundColor: 'transparent',
+                '& .MuiBottomNavigationAction-root': {
+                  minWidth: 'auto',
+                  px: 1.5,
+                  py: 0.75,
+                  '&.Mui-selected': {
+                    color: '#1E40AF',
+                    '& .MuiBottomNavigationAction-label': { fontSize: '0.75rem', fontWeight: 600 },
+                    '& .MuiSvgIcon-root': { transform: 'scale(1.15)' }
+                  },
+                  '&:not(.Mui-selected)': { color: '#E5E7EB' },
+                  '& .MuiBottomNavigationAction-label': { fontFamily: '"Cairo", sans-serif', fontSize: '0.7rem', mt: '4px' },
+                  borderRadius: '12px',
+                  transition: 'all 0.25s ease',
+                  '&:hover': { backgroundColor: 'rgba(30,58,138,0.18)' },
+                }
+              }}
+            >
+              {navigationItems.map((item) => (
+                <BottomNavigationAction
+                  key={item.path}
+                  label={item.label}
+                  icon={<item.icon />}
+                  component={Link}
+                  to={item.path}
+                />
+              ))}
+            </BottomNavigation>
+          </Paper>
+        </Box>
       )}
 
       {/* Desktop Side Navigation */}
