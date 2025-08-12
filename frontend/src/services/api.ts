@@ -11,8 +11,8 @@ export type RecordData = {
 const parseUrl = (url: string): { collection: string; id: number | null } => {
   const parts = url.split('/').filter(Boolean);
   const collection = parts[0];
-  const id = parts.length > 1 ? parseInt(parts[1], 10) : null;
-  return { collection, id };
+  const maybeId = parts.length > 1 ? Number(parts[1]) : NaN;
+  return { collection, id: Number.isFinite(maybeId) ? maybeId : null };
 };
 
 const load = (collection: string): RecordData[] => {

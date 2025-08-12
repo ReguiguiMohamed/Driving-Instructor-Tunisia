@@ -9,8 +9,8 @@ export const getNotifications = async (): Promise<Notification[]> => {
 };
 
 export const getPendingNotifications = async (): Promise<Notification[]> => {
-  const response = await api.get(`${API_URL}/pending`);
-  return response.data;
+  const response = await api.get(API_URL);
+  return response.data.filter((n: Notification) => !n.isSent);
 };
 
 export const createNotification = async (
@@ -33,6 +33,6 @@ export const deleteNotification = async (id: number): Promise<void> => {
 };
 
 export const markNotificationAsSent = async (id: number): Promise<Notification> => {
-  const response = await api.patch(`${API_URL}/${id}/mark-sent`, {});
+  const response = await api.patch(`${API_URL}/${id}`, { isSent: true });
   return response.data;
 };
