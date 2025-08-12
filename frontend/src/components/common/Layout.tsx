@@ -245,7 +245,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             position: 'fixed',
             left: 0,
             right: 0,
-            bottom: 'max(env(safe-area-inset-bottom), 12px)',  // sit above the gesture area
+            bottom: 'calc(env(safe-area-inset-bottom) + 24px)',  // raise above system nav
             zIndex: theme.zIndex.drawer + 1,
             display: 'flex',
             justifyContent: 'center',
