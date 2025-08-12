@@ -32,7 +32,6 @@ import {
   AccountBalance,
   Paid,
   Event,
-  Description,
   ConfirmationNumber,
   ExpandLess,
   ExpandMore,

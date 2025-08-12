@@ -305,7 +305,7 @@ const Dashboard: React.FC = () => {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [getStudentsData, getLessonsData, getPaymentsData]);
 
   useEffect(() => {
     syncStudents();

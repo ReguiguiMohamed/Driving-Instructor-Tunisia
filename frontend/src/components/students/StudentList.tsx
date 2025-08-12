@@ -2,11 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
-  Card,
-  CardContent,
-  Avatar,
-  Chip,
-  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -27,15 +22,9 @@ import {
   Phone,
   Person,
   Schedule,
-  Edit,
-  Delete,
-  ExpandMore,
-  ExpandLess,
-  Warning,
 } from '@mui/icons-material';
 import { Student } from '../../types';
 import { getStudents, createStudent, deleteStudent, updateStudent } from '../../services/studentService';
-import { formatCurrency } from '../../utils/currency';
 import StudentCard from './StudentCard';
 import Loading from '../common/Loading';
 import useOfflineStorage from '../../hooks/useOfflineStorage';
