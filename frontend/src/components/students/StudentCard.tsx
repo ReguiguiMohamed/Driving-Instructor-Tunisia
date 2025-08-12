@@ -22,16 +22,18 @@ import {
   Person,
   Schedule,
 } from '@mui/icons-material';
-import { Student } from '../../types';
+import { Student, Lesson, Payment } from '../../types';
 import { formatCurrency } from '../../utils/currency';
 
 interface StudentCardProps {
   student: Student;
+  lessons: Lesson[];
+  payments: Payment[];
   onEdit: (student: Student) => void;
   onDelete: (studentId: number) => void;
 }
 
-const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) => {
+const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, onEdit, onDelete }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [expanded, setExpanded] = useState(false);
@@ -54,11 +56,16 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
     }
   };
 
-  const completedLessonsCount = student.totalLessonsCompleted;
-  const pricePerHour = student.pricePerHour;
-  const paidLessonsCount = Math.floor(student.totalAmountPaid / pricePerHour);
-  const remainingLessonsCount = completedLessonsCount - paidLessonsCount;
-  const balanceAmount = completedLessonsCount * pricePerHour - student.totalAmountPaid;
+  const lessonPrice = 25;
+
+  const completedLessonsCount = lessons.filter(
+    l => l.studentId === student.id && new Date(l.scheduledDateTime) <= new Date()
+  ).length;
+  const totalPayments = payments
+    .filter(p => p.studentId === student.id)
+    .reduce((sum, p) => sum + p.amount, 0);
+  const paidLessonsCount = Math.floor(totalPayments / lessonPrice);
+  const balanceAmount = completedLessonsCount * lessonPrice - totalPayments;
 
   return (
     <Card
@@ -116,8 +123,8 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
             {[
               { label: 'دروس مكتملة', value: completedLessonsCount, color: '#2563EB' },
               { label: 'دروس مدفوعة', value: paidLessonsCount, color: '#16A34A' },
-              { label: balanceAmount > 0 ? 'مستحق' : 'مدفوع', value: formatCurrency(Math.abs(balanceAmount)), color: balanceAmount > 0 ? '#DC2626' : '#16A34A' },
-              { label: 'متبقية', value: remainingLessonsCount, color: remainingLessonsCount > 0 ? '#F59E0B' : '#6B7280' },
+              { label: 'المدفوعات', value: formatCurrency(totalPayments), color: '#0D9488' },
+              { label: 'المتبقي', value: formatCurrency(balanceAmount), color: balanceAmount > 0 ? '#F59E0B' : '#6B7280' },
             ].map((stat, idx) => (
               <Grid size={{ xs: 6, sm: 3 }} key={idx}>
                 <Box sx={{ textAlign: 'center' }}>

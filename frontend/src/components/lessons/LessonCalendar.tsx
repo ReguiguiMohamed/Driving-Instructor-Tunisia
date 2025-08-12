@@ -15,7 +15,7 @@ import {
   DialogContent,
   useTheme,
   useMediaQuery,
-  Fab,
+  Button,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
 
@@ -109,16 +109,7 @@ const LessonCalendar: React.FC = () => {
   });
 
   return (
-    <Box
-      sx={{
-        p: isMobile ? 2 : 3,
-        pb: 10,
-        bgcolor: 'background.default',
-        minHeight: '100vh',
-        position: 'relative',
-      }}
-      className="fade-in"
-    >
+    <Box sx={{ p: isMobile ? 2 : 3, bgcolor: 'background.default' }} className="fade-in">
       <Typography
         variant={isMobile ? 'h5' : 'h4'}
         sx={{ mb: 2, fontWeight: 700, textAlign: 'center' }}
@@ -148,19 +139,11 @@ const LessonCalendar: React.FC = () => {
         ))}
       </Grid>
 
-      <Fab
-        color="primary"
-        onClick={() => handleOpen()}
-        sx={{
-          position: 'fixed',
-          bottom: isMobile ? 80 : 40,
-          right: isMobile ? 16 : 24,
-          zIndex: 1000,
-        }}
-        size={isMobile ? 'medium' : 'large'}
-      >
-        <Add />
-      </Fab>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
+          إضافة درس
+        </Button>
+      </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>{dialogTitle}</DialogTitle>
