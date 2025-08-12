@@ -63,10 +63,11 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
   return (
     <Card
       sx={{
-        background: 'rgba(0, 0, 0, 0.9)',
-        backdropFilter: 'blur(20px)',
+        background: 'rgba(255,255,255,0.9)',
+        backdropFilter: 'blur(10px)',
         borderRadius: 2,
-        border: '1px solid rgba(255,255,255,0.2)',
+        border: '1px solid rgba(0,0,0,0.1)',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
         overflow: 'hidden',
         position: 'relative',
         '&::before': {
@@ -95,7 +96,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
           <Box sx={{ ml: 2, flex: 1, minWidth: 0 }}>
             <Typography
               variant={isMobile ? 'h6' : 'h5'}
-              sx={{ fontWeight: 700, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              sx={{ fontWeight: 700, color: '#1F2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
               {student.firstName} {student.lastName}
             </Typography>
@@ -130,14 +131,14 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, onEdit, onDelete }) 
               </Grid>
             ))}
           </Grid>
-          <Box sx={{ mt: 1, p: 2, background: 'rgba(248,250,252,0.6)', borderRadius: 1 }}>
-            <Typography variant="body2" sx={{ mb: 1 }}>
+          <Box sx={{ mt: 1, p: 2, background: 'rgba(241,245,249,0.8)', borderRadius: 1 }}>
+            <Typography variant="body2" sx={{ mb: 1, color: '#1F2937' }}>
               <Phone fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {student.phoneNumber}
             </Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>
+            <Typography variant="body2" sx={{ mb: 1, color: '#1F2937' }}>
               <Person fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {student.cin}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ color: '#1F2937' }}>
               <Schedule fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {new Date(student.dateOfBirth).toLocaleDateString('ar-TN')}
             </Typography>
           </Box>
