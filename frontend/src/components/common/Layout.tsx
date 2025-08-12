@@ -122,13 +122,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <AppBar
         position="fixed"
         sx={{
-          background: 'linear-gradient(135deg, #1E40AF 0%, #0D9488 100%)',
+          background: 'linear-gradient(135deg, #7C3AED 0%, #0D9488 100%)',
           backdropFilter: 'blur(20px)',
           boxShadow: '0 8px 32px rgba(30, 58, 138, 0.3)',
           zIndex: theme.zIndex.drawer + 1,
+          paddingTop: 'env(safe-area-inset-top)',
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between', px: 2 }}>
+        <Toolbar sx={{ justifyContent: 'space-between', px: 2, minHeight: { xs: 56, sm: 64 } }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Avatar 
               sx={{ 
@@ -204,7 +205,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          pt: isMobile ? '80px' : '88px',
+          pt: isMobile
+            ? 'calc(64px + env(safe-area-inset-top))'
+            : 'calc(72px + env(safe-area-inset-top))',
           pb: isMobile ? 'calc(110px + env(safe-area-inset-bottom))' : '24px',
           px: isMobile ? 1 : 3,
           minHeight: '100vh',
@@ -245,7 +248,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             position: 'fixed',
             left: 0,
             right: 0,
-            bottom: 'max(env(safe-area-inset-bottom), 12px)',  // sit above the gesture area
+            bottom: 'calc(env(safe-area-inset-bottom) + 24px)',  // raise above system nav
             zIndex: theme.zIndex.drawer + 1,
             display: 'flex',
             justifyContent: 'center',

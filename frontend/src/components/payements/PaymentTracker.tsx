@@ -15,7 +15,6 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Fab,
   IconButton,
   Collapse,
   Alert,
@@ -250,7 +249,7 @@ const PaymentTracker: React.FC = () => {
   }
 
   return (
-    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 }} className="fade-in">
+    <Box sx={{ p: isMobile ? 2 : 3 }} className="fade-in">
       <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ mb: 3, fontWeight: 700 }}>
         إدارة الدفعات
       </Typography>
@@ -272,14 +271,11 @@ const PaymentTracker: React.FC = () => {
         ))}
       </Grid>
 
-      <Fab
-        color="primary"
-        onClick={() => handleOpen()}
-        sx={{ position: 'fixed', bottom: isMobile ? 16 : 24, right: isMobile ? 16 : 24 }}
-        size={isMobile ? 'medium' : 'large'}
-      >
-        <Add />
-      </Fab>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
+          إضافة دفعة
+        </Button>
+      </Box>
 
       <Dialog open={openDialog} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>{dialogTitle}</DialogTitle>
