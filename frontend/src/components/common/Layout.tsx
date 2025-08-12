@@ -251,6 +251,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             backdropFilter: 'blur(20px)',
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.5)',
+            paddingBottom: 'calc(8px + env(safe-area-inset-bottom))',
           }}
           elevation={0}
         >
