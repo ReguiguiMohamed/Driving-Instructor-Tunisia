@@ -28,7 +28,8 @@
   --border-radius-xl: 24px;
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
+    --transition-slow: 0.5s ease;
+  --selected-nav-color: #E040FB;
 }
 
 /* Reset and Base Styles */

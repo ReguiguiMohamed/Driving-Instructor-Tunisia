@@ -280,7 +280,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   px: 1.5,
                   py: 0.75,
                   '&.Mui-selected': {
-                    color: 'var(--primary-color)',
+                    color: '#FFFFFF',
                     '& .MuiBottomNavigationAction-label': { fontSize: '0.75rem', fontWeight: 600 },
                     '& .MuiSvgIcon-root': { transform: 'scale(1.15)' }
                   },
@@ -353,6 +353,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   transition: 'all 0.3s ease',
                   '& .MuiSvgIcon-root': {
                     fontSize: '24px',
+                    color: isActive ? 'var(--selected-nav-color)' : undefined,
                   }
                 }}
               >

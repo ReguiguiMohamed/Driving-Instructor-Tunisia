@@ -11,7 +11,7 @@ const SplashScreen: React.FC = () => (
       backgroundColor: 'var(--background-primary)',
     }}
   >
-    <img src="/splash.png" alt="App Splash" style={{ maxWidth: '60%' }} />
+    <img src="/splash.png" alt="App Splash" style={{ maxWidth: '110%' }} />
   </Box>
 );
 
