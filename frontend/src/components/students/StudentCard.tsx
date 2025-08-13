@@ -40,7 +40,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return '#2563EB'; // Blue-600
+      case 'active': return '#1E293B'; // Slate-800
       case 'completed': return '#16A34A'; // Green-600
       case 'suspended': return '#DC2626'; // Red-600
       default: return '#6B7280'; // Gray-500
@@ -113,7 +113,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
               sx={{ mt: 1, background: `${getStatusColor(student.status)}15`, color: getStatusColor(student.status), fontWeight: 600 }}
             />
           </Box>
-          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#2563EB' }}>
+          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#1E293B' }}>
             {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
           </IconButton>
         </Box>
@@ -121,9 +121,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <Grid container spacing={1} sx={{ mb: 1 }}>
             {[
-              { label: 'دروس مكتملة', value: completedLessonsCount, color: '#2563EB' },
+              { label: 'دروس مكتملة', value: completedLessonsCount, color: '#1E293B' },
               { label: 'دروس مدفوعة', value: paidLessonsCount, color: '#16A34A' },
-              { label: 'المدفوعات', value: formatCurrency(totalPayments), color: '#0D9488' },
+              { label: 'المدفوعات', value: formatCurrency(totalPayments), color: '#334155' },
               { label: 'المتبقي', value: formatCurrency(balanceAmount), color: balanceAmount > 0 ? '#F59E0B' : '#6B7280' },
             ].map((stat, idx) => (
               <Grid size={{ xs: 6, sm: 3 }} key={idx}>
