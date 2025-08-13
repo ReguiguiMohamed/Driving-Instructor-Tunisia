@@ -235,7 +235,7 @@ const StudentList: React.FC = () => {
           right: { xs: 16, sm: 32 },
           zIndex: (theme) => theme.zIndex.tooltip,
         }}
-      
+      >
         <Add />
       </Fab>
 
