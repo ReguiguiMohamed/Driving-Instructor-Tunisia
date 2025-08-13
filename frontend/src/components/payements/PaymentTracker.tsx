@@ -294,6 +294,11 @@ const PaymentTracker: React.FC = () => {
       >
         <Add />
       </Fab>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
+          إضافة دفعة
+        </Button>
+      </Box>
 
       <Dialog open={openDialog} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>{dialogTitle}</DialogTitle>

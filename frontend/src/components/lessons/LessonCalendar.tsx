@@ -162,6 +162,11 @@ const LessonCalendar: React.FC = () => {
       >
         <Add />
       </Fab>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
+          إضافة درس
+        </Button>
+      </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>{dialogTitle}</DialogTitle>
