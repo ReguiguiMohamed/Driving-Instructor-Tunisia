@@ -2,7 +2,7 @@ import { getStudents } from './studentService';
 import { getLessons } from './lessonService';
 import { getPayments } from './paymentService';
 import { getNotifications, createNotification } from './notificationService';
-import { Student, Lesson, Notification } from '../types';
+import type { Student, Lesson, Notification as AppNotification } from '../types';
 
 const showBrowserNotification = (title: string, message: string) => {
   if ('Notification' in window) {
@@ -22,7 +22,7 @@ export const generateReminders = async (): Promise<void> => {
     getNotifications(),
   ]);
 
-  const notifications = [...existing];
+  const notifications: AppNotification[] = [...existing];
   const exists = (title: string, message: string) =>
     notifications.some(n => n.title === title && n.message === message);
 
@@ -43,7 +43,7 @@ export const generateReminders = async (): Promise<void> => {
       if (!exists(title, message)) {
         createNotification({ title, message, scheduledDateTime: now.toISOString(), isSent: false });
         showBrowserNotification(title, message);
-        notifications.push({ id: 0, title, message, scheduledDateTime: now.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as Notification);
+        notifications.push({ id: 0, title, message, scheduledDateTime: now.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as AppNotification);
       }
     }
   });
@@ -59,7 +59,7 @@ export const generateReminders = async (): Promise<void> => {
       if (!exists(title, message)) {
         createNotification({ title, message, scheduledDateTime: lesson.scheduledDateTime, isSent: false, lessonId: lesson.id });
         showBrowserNotification(title, message);
-        notifications.push({ id: 0, title, message, scheduledDateTime: lesson.scheduledDateTime, isSent: false, createdAt: '', updatedAt: '' } as Notification);
+        notifications.push({ id: 0, title, message, scheduledDateTime: lesson.scheduledDateTime, isSent: false, createdAt: '', updatedAt: '' } as AppNotification);
       }
     }
   });
@@ -74,7 +74,7 @@ export const generateReminders = async (): Promise<void> => {
         if (!exists(title, message)) {
           createNotification({ title, message, scheduledDateTime: examDate.toISOString(), isSent: false });
           showBrowserNotification(title, message);
-          notifications.push({ id: 0, title, message, scheduledDateTime: examDate.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as Notification);
+          notifications.push({ id: 0, title, message, scheduledDateTime: examDate.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as AppNotification);
         }
       }
     }
@@ -86,7 +86,7 @@ export const generateReminders = async (): Promise<void> => {
         if (!exists(title, message)) {
           createNotification({ title, message, scheduledDateTime: examDate.toISOString(), isSent: false });
           showBrowserNotification(title, message);
-          notifications.push({ id: 0, title, message, scheduledDateTime: examDate.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as Notification);
+          notifications.push({ id: 0, title, message, scheduledDateTime: examDate.toISOString(), isSent: false, createdAt: '', updatedAt: '' } as AppNotification);
         }
       }
     }

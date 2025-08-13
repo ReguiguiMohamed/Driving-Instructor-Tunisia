@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, MenuItem, Typography, Box, IconButton } from '@mui/material';
-import { Notification } from '../../types';
+import type { Notification } from '../../types';
 import { Close } from '@mui/icons-material';
 
 interface NotificationMenuProps {
