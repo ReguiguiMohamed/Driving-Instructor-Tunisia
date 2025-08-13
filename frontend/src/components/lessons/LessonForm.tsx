@@ -133,7 +133,7 @@ const LessonForm: React.FC<Props> = ({ students, onSubmit, initialData }) => {
           onChange={e => setLessonType(e.target.value)}
         >
           <MenuItem value="practical">عملي</MenuItem>
-          <MenuItem value="theoretical">نظري</MenuItem>
+          <MenuItem value="park">بارك</MenuItem>
           <MenuItem value="exam_prep">تحضير للاختبار</MenuItem>
         </Select>
       </FormControl>

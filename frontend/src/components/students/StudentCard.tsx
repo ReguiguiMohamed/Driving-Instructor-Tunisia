@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 import { Student, Lesson, Payment } from '../../types';
 import { formatCurrency } from '../../utils/currency';
+import EventIcon from '@mui/icons-material/Event';
 
 interface StudentCardProps {
   student: Student;
@@ -37,6 +38,14 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [expanded, setExpanded] = useState(false);
+
+  const isConduiteExamToday =
+    student.conduiteExamDate &&
+    new Date(student.conduiteExamDate).toDateString() === new Date().toDateString();
+
+  const isParkExamToday =
+    student.parkExamDate &&
+    new Date(student.parkExamDate).toDateString() === new Date().toDateString();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -73,7 +82,9 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
         background: 'rgba(255,255,255,0.9)',
         backdropFilter: 'blur(10px)',
         borderRadius: 2,
-        border: '1px solid rgba(0,0,0,0.1)',
+        border: (isConduiteExamToday || isParkExamToday)
+          ? '2px solid #F59E0B'
+          : '1px solid rgba(0,0,0,0.1)',
         boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
         overflow: 'hidden',
         position: 'relative',
@@ -112,6 +123,12 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
               size="small"
               sx={{ mt: 1, background: `${getStatusColor(student.status)}15`, color: getStatusColor(student.status), fontWeight: 600 }}
             />
+            {isConduiteExamToday && (
+              <Chip label="امتحان سياقة اليوم" color="warning" size="small" sx={{ mt: 1, fontWeight: 600 }} />
+            )}
+            {isParkExamToday && (
+              <Chip label="امتحان بارك اليوم" color="warning" size="small" sx={{ mt: 1, fontWeight: 600 }} />
+            )}
           </Box>
           <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#1E293B' }}>
             {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
@@ -148,6 +165,16 @@ const StudentCard: React.FC<StudentCardProps> = ({ student, lessons, payments, o
             <Typography variant="body2" sx={{ color: '#1F2937' }}>
               <Schedule fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> {new Date(student.dateOfBirth).toLocaleDateString('ar-TN')}
             </Typography>
+            {student.conduiteExamDate && (
+              <Typography variant="body2" sx={{ color: isConduiteExamToday ? 'warning.main' : '#1F2937', mt: 1 }}>
+                <EventIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> امتحان سياقة: {new Date(student.conduiteExamDate).toLocaleDateString('ar-TN')}
+              </Typography>
+            )}
+            {student.parkExamDate && (
+              <Typography variant="body2" sx={{ color: isParkExamToday ? 'warning.main' : '#1F2937', mt: 0.5 }}>
+                <EventIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} /> امتحان بارك: {new Date(student.parkExamDate).toLocaleDateString('ar-TN')}
+              </Typography>
+            )}
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>
             <Button size="small" onClick={() => onEdit(student)} startIcon={<Edit fontSize="small" />}>

@@ -21,6 +21,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { getPendingNotifications, markNotificationAsSent } from '../../services/notificationService';
+import generateReminders from '../../services/reminderService';
 import { Notification } from '../../types';
 import NotificationMenu from './NotificationMenu';
 
@@ -71,6 +72,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
+        await generateReminders();
         const data = await getPendingNotifications();
         setPendingNotifications(data);
       } catch (error) {
