@@ -239,11 +239,7 @@ const StudentList: React.FC = () => {
         <Add />
       </Fab>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-        <Button variant="contained" startIcon={<Add />} onClick={() => handleOpen()}>
-          إضافة طالب
-        </Button>
-      </Box>
+      
 
       {/* Add/Edit Student Dialog */}
       <Dialog open={openDialog} onClose={handleClose} fullWidth maxWidth="sm">
