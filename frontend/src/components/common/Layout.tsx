@@ -22,7 +22,7 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { getPendingNotifications, markNotificationAsSent } from '../../services/notificationService';
 import generateReminders from '../../services/reminderService';
-import { Notification } from '../../types';
+import type { Notification } from '../../types';
 import NotificationMenu from './NotificationMenu';
 
 interface LayoutProps {
