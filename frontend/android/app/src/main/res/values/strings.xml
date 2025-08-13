@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">TN DrivingInstructor</string>
-    <string name="title_activity_main">TN DrivingInstructor</string>
+    <string name="app_name">FayezAutoEcole</string>
+    <string name="title_activity_main">FayezAutoEcole</string>
     <string name="package_name">com.mohamed.TnDriveInstruct</string>
     <string name="custom_url_scheme">com.mohamed.TnDriveInstruct</string>
 </resources>

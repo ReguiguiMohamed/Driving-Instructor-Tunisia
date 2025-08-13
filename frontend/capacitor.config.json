@@ -2,5 +2,17 @@
   "appId": "com.mohamed.TnDriveInstruct",
   "appName": "TN DrivingInstructor",
   "webDir": "build",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffffff",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": true,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
 }
