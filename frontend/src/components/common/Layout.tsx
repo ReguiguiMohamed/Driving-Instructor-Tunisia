@@ -341,7 +341,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   backgroundColor: isActive
                     ? 'rgba(30, 41, 59, 0.2)'
                     : 'transparent',
-                  color: isActive ? 'var(--primary-color)' : '#D1D5DB',
+                  color: isActive ? '#FFFFFF' : '#D1D5DB',
                   border: isActive
                     ? '2px solid rgba(30, 41, 59, 0.3)'
                     : '2px solid transparent',
