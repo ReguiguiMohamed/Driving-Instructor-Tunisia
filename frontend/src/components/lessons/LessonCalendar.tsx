@@ -15,8 +15,10 @@ import {
   DialogContent,
   useTheme,
   useMediaQuery,
+  Button,
   Fab,
 } from '@mui/material';
+import AddHint from '../common/AddHint';
 import { Add } from '@mui/icons-material';
 
 const LessonCalendar: React.FC = () => {
@@ -109,16 +111,7 @@ const LessonCalendar: React.FC = () => {
   });
 
   return (
-    <Box
-      sx={{
-        p: isMobile ? 2 : 3,
-        pb: 10,
-        bgcolor: 'background.default',
-        minHeight: '100vh',
-        position: 'relative',
-      }}
-      className="fade-in"
-    >
+    <Box sx={{ p: isMobile ? 2 : 3, bgcolor: 'background.default' }} className="fade-in">
       <Typography
         variant={isMobile ? 'h5' : 'h4'}
         sx={{ mb: 2, fontWeight: 700, textAlign: 'center' }}
@@ -148,16 +141,24 @@ const LessonCalendar: React.FC = () => {
         ))}
       </Grid>
 
+      <AddHint
+        message="اضغط للإضافة"
+        sx={{
+          bottom: { xs: 'calc(160px + env(safe-area-inset-bottom))', sm: 96 },
+          right: { xs: 16, sm: 32 },
+        }}
+      />
+
       <Fab
         color="primary"
+        aria-label="add"
         onClick={() => handleOpen()}
         sx={{
           position: 'fixed',
-          bottom: isMobile ? 80 : 40,
-          right: isMobile ? 16 : 24,
-          zIndex: 1000,
+          bottom: { xs: 'calc(96px + env(safe-area-inset-bottom))', sm: 32 },
+          right: { xs: 16, sm: 32 },
+          zIndex: (theme) => theme.zIndex.tooltip,
         }}
-        size={isMobile ? 'medium' : 'large'}
       >
         <Add />
       </Fab>

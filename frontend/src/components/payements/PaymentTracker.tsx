@@ -15,14 +15,15 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Fab,
   IconButton,
   Collapse,
   Alert,
   useTheme,
   useMediaQuery,
   Avatar,
+  Fab,
 } from '@mui/material';
+import AddHint from '../common/AddHint';
 import {
   Add,
   Edit,
@@ -250,7 +251,7 @@ const PaymentTracker: React.FC = () => {
   }
 
   return (
-    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 }} className="fade-in">
+    <Box sx={{ p: isMobile ? 2 : 3 }} className="fade-in">
       <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ mb: 3, fontWeight: 700 }}>
         إدارة الدفعات
       </Typography>
@@ -272,11 +273,24 @@ const PaymentTracker: React.FC = () => {
         ))}
       </Grid>
 
+      <AddHint
+        message="اضغط للإضافة"
+        sx={{
+          bottom: { xs: 'calc(160px + env(safe-area-inset-bottom))', sm: 96 },
+          right: { xs: 16, sm: 32 },
+        }}
+      />
+
       <Fab
         color="primary"
+        aria-label="add"
         onClick={() => handleOpen()}
-        sx={{ position: 'fixed', bottom: isMobile ? 16 : 24, right: isMobile ? 16 : 24 }}
-        size={isMobile ? 'medium' : 'large'}
+        sx={{
+          position: 'fixed',
+          bottom: { xs: 'calc(96px + env(safe-area-inset-bottom))', sm: 32 },
+          right: { xs: 16, sm: 32 },
+          zIndex: (theme) => theme.zIndex.tooltip,
+        }}
       >
         <Add />
       </Fab>

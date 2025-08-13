@@ -10,12 +10,13 @@ import {
   TextField,
   Grid,
   InputAdornment,
-  Fab,
   Collapse,
   Alert,
   useTheme,
   useMediaQuery,
+  Fab,
 } from '@mui/material';
+import AddHint from '../common/AddHint';
 import {
   Add,
   Search,
@@ -23,8 +24,10 @@ import {
   Person,
   Schedule,
 } from '@mui/icons-material';
-import { Student } from '../../types';
+import { Student, Lesson, Payment } from '../../types';
 import { getStudents, createStudent, deleteStudent, updateStudent } from '../../services/studentService';
+import { getLessons } from '../../services/lessonService';
+import { getPayments } from '../../services/paymentService';
 import StudentCard from './StudentCard';
 import Loading from '../common/Loading';
 import useOfflineStorage from '../../hooks/useOfflineStorage';
@@ -34,6 +37,8 @@ const StudentList: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [students, setStudents] = useState<Student[]>([]);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [filtered, setFiltered] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -54,24 +59,42 @@ const StudentList: React.FC = () => {
     'students',
     getStudents
   );
+  const {
+    getData: getLessonsData,
+    syncData: syncLessons,
+    isOnline: lessonsOnline,
+  } = useOfflineStorage<Lesson[]>('lessons', getLessons);
+  const {
+    getData: getPaymentsData,
+    syncData: syncPayments,
+    isOnline: paymentsOnline,
+  } = useOfflineStorage<Payment[]>('payments', getPayments);
 
   useEffect(() => {
     (async () => {
       try {
-        const list = await getData();
-        setStudents(list);
-        setFiltered(list);
+        const [studentData, lessonData, paymentData] = await Promise.all([
+          getData(),
+          getLessonsData(),
+          getPaymentsData(),
+        ]);
+        setStudents(studentData);
+        setLessons(lessonData);
+        setPayments(paymentData);
+        setFiltered(studentData);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     })();
-  }, [getData]);
+  }, [getData, getLessonsData, getPaymentsData]);
 
   useEffect(() => {
     syncData();
-  }, [isOnline, syncData]);
+    syncLessons();
+    syncPayments();
+  }, [isOnline, syncData, lessonsOnline, syncLessons, paymentsOnline, syncPayments]);
 
   // filter as user types
   useEffect(() => {
@@ -153,7 +176,7 @@ const StudentList: React.FC = () => {
   }
 
   return (
-    <Box sx={{ p: isMobile ? 2 : 3, pb: 10 /* Add padding to bottom to avoid overlap with FAB */ }} className="fade-in">
+    <Box sx={{ p: isMobile ? 2 : 3 }} className="fade-in">
       {/* Header & Search */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
         <Typography variant={isMobile ? 'h5' : 'h4'} sx={{ flexGrow: 1 }}>
@@ -185,6 +208,8 @@ const StudentList: React.FC = () => {
           <Grid size={{ xs: 12, sm: 6, md: 4 }} key={student.id}>
             <StudentCard
               student={student}
+              lessons={lessons}
+              payments={payments}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
@@ -192,16 +217,24 @@ const StudentList: React.FC = () => {
         ))}
       </Grid>
 
-      {/* FIXED: Add Student FAB at the bottom right */}
+      <AddHint
+        message="اضغط للإضافة"
+        sx={{
+          bottom: { xs: 'calc(160px + env(safe-area-inset-bottom))', sm: 96 },
+          right: { xs: 16, sm: 32 },
+        }}
+      />
+
       <Fab
         color="primary"
+        aria-label="add"
         onClick={() => handleOpen()}
         sx={{
           position: 'fixed',
-          bottom: isMobile ? 16 : 24,
-          right: isMobile ? 16 : 24,
+          bottom: { xs: 'calc(96px + env(safe-area-inset-bottom))', sm: 32 },
+          right: { xs: 16, sm: 32 },
+          zIndex: (theme) => theme.zIndex.tooltip,
         }}
-        size={isMobile ? 'medium' : 'large'}
       >
         <Add />
       </Fab>
