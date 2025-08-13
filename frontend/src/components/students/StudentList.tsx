@@ -50,6 +50,8 @@ const StudentList: React.FC = () => {
     cin: '',
     dateOfBirth: '',
     licenseType: '',
+    conduiteExamDate: '',
+    parkExamDate: '',
   });
 
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -115,14 +117,14 @@ const StudentList: React.FC = () => {
       setForm(student);
       setDialogTitle('تعديل بيانات الطالب');
     } else {
-      setForm({ firstName: '', lastName: '', phoneNumber: '', cin: '', dateOfBirth: '', licenseType: '' });
+      setForm({ firstName: '', lastName: '', phoneNumber: '', cin: '', dateOfBirth: '', licenseType: '', conduiteExamDate: '', parkExamDate: '' });
       setDialogTitle('إضافة طالب جديد');
     }
     setOpenDialog(true);
   };
   const handleClose = () => {
     setOpenDialog(false);
-    setForm({ firstName: '', lastName: '', phoneNumber: '', cin: '', dateOfBirth: '', licenseType: '' });
+    setForm({ firstName: '', lastName: '', phoneNumber: '', cin: '', dateOfBirth: '', licenseType: '', conduiteExamDate: '', parkExamDate: '' });
     setAlert(null);
   };
 
@@ -315,6 +317,40 @@ const StudentList: React.FC = () => {
                 fullWidth
                 value={form.licenseType}
                 onChange={handleChange('licenseType')}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="تاريخ امتحان السياقة"
+                type="date"
+                fullWidth
+                value={form.conduiteExamDate}
+                onChange={handleChange('conduiteExamDate')}
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Schedule />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="تاريخ امتحان البارك"
+                type="date"
+                fullWidth
+                value={form.parkExamDate}
+                onChange={handleChange('parkExamDate')}
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Schedule />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
           </Grid>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Menu, MenuItem, Typography, Box, IconButton } from '@mui/material';
-import { Notification } from '../../types';
+import type { Notification as AppNotification } from '../../types';
 import { Close } from '@mui/icons-material';
 
 interface NotificationMenuProps {
-  notifications: Notification[];
+  notifications: AppNotification[];
   anchorEl: null | HTMLElement;
   onClose: () => void;
   onMarkAsRead: (id: number) => void;

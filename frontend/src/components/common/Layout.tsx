@@ -21,7 +21,8 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { getPendingNotifications, markNotificationAsSent } from '../../services/notificationService';
-import { Notification } from '../../types';
+import generateReminders from '../../services/reminderService';
+import type { Notification as AppNotification } from '../../types';
 import NotificationMenu from './NotificationMenu';
 
 interface LayoutProps {
@@ -40,8 +41,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [pendingNotifications, setPendingNotifications] = useState<Notification[]>([]);
+  const [pendingNotifications, setPendingNotifications] = useState<AppNotification[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+  }, []);
 
   const handleNotificationClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,6 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
+        await generateReminders();
         const data = await getPendingNotifications();
         setPendingNotifications(data);
       } catch (error) {
@@ -278,9 +286,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   px: 1.5,
                   py: 0.75,
                   '&.Mui-selected': {
-                    color: 'var(--primary-color)',
+                    color: 'var(--accent-color)',
                     '& .MuiBottomNavigationAction-label': { fontSize: '0.75rem', fontWeight: 600 },
-                    '& .MuiSvgIcon-root': { transform: 'scale(1.15)' }
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--accent-color)',
+                      transform: 'scale(1.15)'
+                    }
                   },
                   '&:not(.Mui-selected)': { color: '#E5E7EB' },
                   '& .MuiBottomNavigationAction-label': { fontFamily: '"Cairo", sans-serif', fontSize: '0.7rem', mt: '4px' },
@@ -339,7 +350,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   backgroundColor: isActive
                     ? 'rgba(30, 41, 59, 0.2)'
                     : 'transparent',
-                  color: isActive ? 'var(--primary-color)' : '#D1D5DB',
+                  color: isActive ? 'var(--accent-color)' : '#D1D5DB',
                   border: isActive
                     ? '2px solid rgba(30, 41, 59, 0.3)'
                     : '2px solid transparent',
