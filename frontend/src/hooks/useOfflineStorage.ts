@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
+import { getItem, setItem } from '../services/storage';
 
 /**
  * Hybrid online/offline data handler.
- * Stores API data in localStorage when online and
+ * Stores API data in IndexedDB when online and
  * retrieves cached data when offline.
  */
 export const useOfflineStorage = <T>(
@@ -24,18 +25,18 @@ export const useOfflineStorage = <T>(
   const syncData = useCallback(async () => {
     if (isOnline) {
       const data = await fetcher();
-      localStorage.setItem(key, JSON.stringify(data));
+      await setItem(key, data);
     }
   }, [isOnline, fetcher, key]);
 
   const getData = useCallback(async (): Promise<T> => {
     if (isOnline) {
       const data = await fetcher();
-      localStorage.setItem(key, JSON.stringify(data));
+      await setItem(key, data);
       return data;
     }
-    const cached = localStorage.getItem(key);
-    return cached ? (JSON.parse(cached) as T) : ([] as unknown as T);
+    const cached = await getItem<T>(key);
+    return cached ?? ([] as unknown as T);
   }, [isOnline, fetcher, key]);
 
   return { isOnline, syncData, getData };
