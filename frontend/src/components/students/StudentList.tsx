@@ -16,6 +16,7 @@ import {
   useMediaQuery,
   Fab,
 } from '@mui/material';
+import AddHint from '../common/AddHint';
 import {
   Add,
   Search,
@@ -215,6 +216,14 @@ const StudentList: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+
+      <AddHint
+        message="اضغط للإضافة"
+        sx={{
+          bottom: { xs: 'calc(160px + env(safe-area-inset-bottom))', sm: 96 },
+          right: { xs: 16, sm: 32 },
+        }}
+      />
 
       <Fab
         color="primary"
