@@ -15,6 +15,8 @@ export interface Student {
   status: string;
   notes: string;
   pricePerHour: number;
+  conduiteExamDate?: string;
+  parkExamDate?: string;
   createdAt: Date;
   updatedAt: Date;
 }

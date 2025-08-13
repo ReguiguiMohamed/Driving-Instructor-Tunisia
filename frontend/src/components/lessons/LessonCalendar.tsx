@@ -100,6 +100,11 @@ const LessonCalendar: React.FC = () => {
     setLessons(prev => prev.filter(l => l.id !== id));
   };
 
+  const handleMarkDone = async (id: number) => {
+    const updatedLesson = await updateLesson(id, { status: 'completed' });
+    setLessons(prev => prev.map(l => (l.id === id ? updatedLesson : l)));
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -136,6 +141,7 @@ const LessonCalendar: React.FC = () => {
               student={students.find(s => s.id === lesson.studentId)}
               onEdit={() => handleOpen(lesson)}
               onDelete={handleDeleteLesson}
+              onMarkDone={handleMarkDone}
             />
           </Grid>
         ))}

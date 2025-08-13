@@ -17,6 +17,7 @@ import {
   ExpandLess,
   Edit,
   Delete as DeleteIcon,
+  Check,
 } from '@mui/icons-material';
 
 interface LessonCardProps {
@@ -24,9 +25,10 @@ interface LessonCardProps {
   student?: Student;
   onEdit: (lesson: Lesson) => void;
   onDelete: (id: number) => void;
+  onMarkDone: (id: number) => void;
 }
 
-const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDelete }) => {
+const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDelete, onMarkDone }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [expanded, setExpanded] = useState(false);
@@ -105,7 +107,12 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDele
             </Typography>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-            <Button size="small" onClick={() => onEdit(lesson)} startIcon={<Edit fontSize="small" />}>
+            {lesson.status !== 'completed' && (
+              <Button size="small" color="success" onClick={() => onMarkDone(lesson.id)} startIcon={<Check fontSize="small" />}>
+                تم
+              </Button>
+            )}
+            <Button size="small" onClick={() => onEdit(lesson)} startIcon={<Edit fontSize="small" />}> 
               تعديل
             </Button>
             <Button

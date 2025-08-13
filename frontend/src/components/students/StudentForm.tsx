@@ -33,6 +33,8 @@ const StudentForm: React.FC<Props> = ({ student, onSubmit }) => {
   const [dateOfBirth, setDateOfBirth] = useState(student?.dateOfBirth || '');
   const [address, setAddress] = useState(student?.address || '');
   const [pricePerHour, setPricePerHour] = useState(student?.pricePerHour || 25);
+  const [conduiteExamDate, setConduiteExamDate] = useState(student?.conduiteExamDate || '');
+  const [parkExamDate, setParkExamDate] = useState(student?.parkExamDate || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +53,8 @@ const StudentForm: React.FC<Props> = ({ student, onSubmit }) => {
       status: student?.status || 'active',
       notes: student?.notes || '',
       pricePerHour: pricePerHour,
+      conduiteExamDate,
+      parkExamDate,
     });
   };
 
@@ -178,6 +182,40 @@ const StudentForm: React.FC<Props> = ({ student, onSubmit }) => {
             value={pricePerHour}
             onChange={e => setPricePerHour(Number(e.target.value))}
             required
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="تاريخ امتحان السياقة"
+            type="date"
+            fullWidth
+            value={conduiteExamDate}
+            onChange={e => setConduiteExamDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CalendarIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField
+            label="تاريخ امتحان البارك"
+            type="date"
+            fullWidth
+            value={parkExamDate}
+            onChange={e => setParkExamDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CalendarIcon />
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
       </Grid>
