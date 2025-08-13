@@ -40,7 +40,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDele
       case 'completed':
         return '#16A34A';
       case 'scheduled':
-        return '#2563EB';
+        return '#1E293B';
       case 'cancelled':
         return '#DC2626';
       default:
@@ -87,7 +87,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, student, onEdit, onDele
           {isToday && (
             <Chip label="درس اليوم" color="warning" size="small" sx={{ fontWeight: 600, mr: 1 }} />
           )}
-          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#2563EB' }}>
+          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#1E293B' }}>
             {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
           </IconButton>
         </Box>

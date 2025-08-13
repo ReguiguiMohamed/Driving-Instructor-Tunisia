@@ -70,7 +70,7 @@ const PaymentCard: React.FC<{ payment: Payment; student?: Student; onEdit: () =>
     >
       <CardContent sx={{ p: isMobile ? 2 : 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <Avatar sx={{ background: `linear-gradient(135deg, #2563EB, #16A34A)`, color: 'white' }}>
+          <Avatar sx={{ background: `linear-gradient(135deg, #1E293B, #334155)`, color: 'white' }}>
             <Receipt />
           </Avatar>
           <Box sx={{ flex: 1, ml: 2 }}>
@@ -81,7 +81,7 @@ const PaymentCard: React.FC<{ payment: Payment; student?: Student; onEdit: () =>
               {student ? `${student.firstName} ${student.lastName}` : 'طالب غير معروف'}
             </Typography>
           </Box>
-          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#2563EB' }}>
+          <IconButton size="small" onClick={() => setExpanded(!expanded)} sx={{ color: '#1E293B' }}>
             {expanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
           </IconButton>
         </Box>

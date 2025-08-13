@@ -4,9 +4,9 @@
 
 /* Root Variables */
 :root {
-  --primary-color: #1E40AF;
-  --secondary-color: #0D9488;
-  --accent-color: #F97316;
+  --primary-color: #1E293B;
+  --secondary-color: #334155;
+  --accent-color: #64748B;
   --success-color: #059669;
   --warning-color: #D97706;
   --error-color: #EF4444;

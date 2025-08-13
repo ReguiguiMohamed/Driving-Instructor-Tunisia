@@ -357,7 +357,7 @@ const Dashboard: React.FC = () => {
             value={stats.totalStudents}
             subtitle={`${stats.activeStudents} نشط`}
             icon={<People />}
-            color="#1E40AF"
+            color="#1E293B"
             progress={activeRate}
             onClick={() => navigate('/students')}
           />
@@ -368,7 +368,7 @@ const Dashboard: React.FC = () => {
             value={stats.todayLessons}
             subtitle={`من ${stats.totalLessons} إجمالي`}
             icon={<Event />}
-            color="#0D9488"
+            color="#334155"
             trend={15} // Placeholder trend value
             onClick={() => navigate('/lessons')}
           />
@@ -452,7 +452,7 @@ const Dashboard: React.FC = () => {
                     >
                       <Avatar
                         sx={{
-                          background: `linear-gradient(135deg, #2563EB${index * 20 + 20}, #16A34A${index * 15 + 15})`,
+                          background: `linear-gradient(135deg, #1E293B${index * 20 + 20}, #334155${index * 15 + 15})`,
                           width: 40,
                           height: 40,
                           fontSize: '1rem',
