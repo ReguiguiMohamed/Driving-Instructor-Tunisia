@@ -151,7 +151,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   fontFamily: '"Amiri", "Cairo", serif',
                 }}
               >
-                مدرسة فيروز لتعليم السياقة
+                مدرسة فايز لتعليم السياقة
               </Typography>
               <Typography 
                 variant="caption" 
