@@ -45,6 +45,8 @@ Material-UI 5.14+     // Google's Material Design component library
 Emotion 11.11+        // CSS-in-JS styling solution
 React Router 6.15+    // Declarative routing for SPAs
 ```
+### Backend Stack
+NestJs 15.4.6 // Found In the Old Legacy Main Branch 
 
 ### Mobile Integration
 ```javascript
@@ -56,3 +58,4 @@ Capacitor Plugins     // Native device API access (Camera, Storage, etc.)
 ```typescript
 React Hooks           // Built-in state management with useReducer patterns
 Context API           // Global state distribution
+
